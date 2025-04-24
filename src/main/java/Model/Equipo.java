@@ -1,34 +1,47 @@
 package Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Equipo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id_equipo;
+    private Integer id_equipo;
 
     private String nombre;
     private String ciudad;
     private Date fundacion;
 
-    public Equipo(long id_equipo, String nombre, String ciudad, Date fundacion) {
+    @OneToMany(mappedBy = "equipo", cascade = CascadeType.ALL)
+    @JsonManagedReference(value = "equipo-jugadores")
+    private List<Jugador> jugadores;
+
+    @OneToMany(mappedBy = "equipo", cascade = CascadeType.ALL)
+    @JsonManagedReference(value = "equipo-entrenadores")
+    private List<Entrenador> entrenadores;
+
+    public Equipo() {
+    }
+
+    public Equipo(Integer id_equipo, String nombre, String ciudad, Date fundacion, List<Jugador> jugadores, List<Entrenador> entrenadores) {
         this.id_equipo = id_equipo;
         this.nombre = nombre;
         this.ciudad = ciudad;
         this.fundacion = fundacion;
+        this.jugadores = jugadores;
+        this.entrenadores = entrenadores;
     }
 
-    public long getId_equipo() {
+    public Integer getId_equipo() {
         return id_equipo;
     }
 
-    public void setId_equipo(long id_equipo) {
+    public void setId_equipo(Integer id_equipo) {
         this.id_equipo = id_equipo;
     }
 
@@ -54,5 +67,21 @@ public class Equipo {
 
     public void setFundacion(Date fundacion) {
         this.fundacion = fundacion;
+    }
+
+    public List<Jugador> getJugadores() {
+        return jugadores;
+    }
+
+    public void setJugadores(List<Jugador> jugadores) {
+        this.jugadores = jugadores;
+    }
+
+    public List<Entrenador> getEntrenadores() {
+        return entrenadores;
+    }
+
+    public void setEntrenadores(List<Entrenador> entrenadores) {
+        this.entrenadores = entrenadores;
     }
 }

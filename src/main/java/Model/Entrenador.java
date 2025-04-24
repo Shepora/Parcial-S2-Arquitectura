@@ -1,32 +1,38 @@
 package Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
 public class Entrenador {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id_entrenador;
+    private Integer id_entrenador;
 
     private String nombre;
     private String especialidad;
 
     @ManyToOne
     @JoinColumn(name = "id_equipo")
-    private Equipo Equipo;
+    @JsonBackReference(value = "equipo-entrenadores")
+    private Equipo equipo;
 
-    public Entrenador(long id_entrenador, String nombre, String especialidad, Equipo equipo) {
+    public Entrenador() {
+    }
+
+    public Entrenador(Integer id_entrenador, String nombre, String especialidad, Equipo equipo) {
         this.id_entrenador = id_entrenador;
         this.nombre = nombre;
         this.especialidad = especialidad;
-        Equipo = equipo;
+        this.equipo = equipo;
     }
 
-    public long getId_entrenador() {
+    public Integer getId_entrenador() {
         return id_entrenador;
     }
 
-    public void setId_entrenador(long id_entrenador) {
+    public void setId_entrenador(Integer id_entrenador) {
         this.id_entrenador = id_entrenador;
     }
 
@@ -47,10 +53,10 @@ public class Entrenador {
     }
 
     public Equipo getEquipo() {
-        return Equipo;
+        return equipo;
     }
 
     public void setEquipo(Equipo equipo) {
-        Equipo = equipo;
+        this.equipo = equipo;
     }
 }
